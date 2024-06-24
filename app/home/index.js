@@ -10,6 +10,7 @@ import ImageGrid from '../../components/imageGrid';
 import { debounce } from 'lodash';
 import Filtermodal from '../../components/filtersModal';
 import { useRouter } from 'expo-router';
+import { Image } from 'expo-image';
 
 
 
@@ -169,9 +170,7 @@ const handleScroll = (event)=>{
     <View style={[styles.container, { paddingTop }]}>
       <View style={styles.header}>
         <Pressable onPress={handleScrollUp}>
-          <Text style={styles.title}>
-            Pixi 
-          </Text> 
+        <Image source={require('../../assets/images/adaptive-icon.png')} style={styles.iconImage} />
           {/* our image need to be changed */}
         </Pressable>
         <Pressable onPress={openFiltersModal}>
@@ -282,6 +281,11 @@ const styles = StyleSheet.create({
     fontSize: hp(4),
     fontWeight: theme.fontWeights.semibold,
     color: theme.colors.neutral(0.9)
+  },
+  iconImage:{
+    width:wp(16),
+    height:hp(10),
+    padding:8
   },
   searchBar: {
     marginHorizontal: 20,
