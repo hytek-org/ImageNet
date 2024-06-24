@@ -270,6 +270,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 20,
+    
   },
   header: {
     marginHorizontal: wp(7),

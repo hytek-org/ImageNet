@@ -25,7 +25,7 @@ const index = () => {
           >
 
           </Animated.Text> */}
-          <Animated.Text style={styles.punchline}
+          <Animated.Text style={styles.punchline } 
             entering={FadeInDown.delay(500).springify()}>
             Get Ready To Explore The Things
           </Animated.Text>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: theme.colors.neutral(0.9), // Assuming you have a background color in your theme
+     // Assuming you have a background color in your theme
   },
   imageDiv: {
     flex: 2,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   contentContainer: {
-    flex: 1,
+    
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -72,21 +72,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   punchline: {
-    fontSize: hp(2.5),
+   marginBottom:10,
+    fontSize: hp(1.5),
     letterSpacing: 1,
-    marginBottom: 110,
+   
     fontWeight: theme.fontWeights.medium,
     color: theme.colors.text, // Assuming you have a text color in your theme
     textAlign: 'center',
-    paddingHorizontal: 20,
-    color:theme.colors.neutral(0.8)
+  
   },
   startButton: {
+    width:wp(70),
     marginBottom: 50,
     backgroundColor: theme.colors.neutral(0.9), // Assuming you have a primary color in your theme
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: theme.radius.xl,
+    marginHorizontal:'auto'
   },
   startText: {
     textAlign: 'center',
