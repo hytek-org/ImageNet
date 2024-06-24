@@ -1,10 +1,11 @@
-import { StatusBar, StyleSheet, Text, View, Image, Pressable, } from 'react-native'
+import { StatusBar, StyleSheet, Text, View, Pressable, } from 'react-native'
 import React from 'react'
 import { hp, wp } from '../helpers/comman'
 import { LinearGradient } from 'expo-linear-gradient'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import { theme } from '../constants/theme'
 import { useRouter } from 'expo-router'
+import { Image } from 'expo-image'
 const index = () => {
   const router = useRouter();
   return (
