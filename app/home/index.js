@@ -216,7 +216,7 @@ const handleScroll = (event)=>{
                     return (
                       <View key={key} style={styles.filterItem}>
                         {
-                          key === "color" ? (
+                          key == "color" ? (
                             <View style={{
                               height: 20,
                               width: 30,

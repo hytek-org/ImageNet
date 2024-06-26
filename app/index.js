@@ -1,7 +1,6 @@
 import { StatusBar, StyleSheet, Text, View, Pressable, } from 'react-native'
 import React from 'react'
 import { hp, wp } from '../helpers/comman'
-import { LinearGradient } from 'expo-linear-gradient'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import { theme } from '../constants/theme'
 import { useRouter } from 'expo-router'

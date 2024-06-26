@@ -8,6 +8,7 @@ import { theme } from "../../constants/theme"
 import { Entypo, Octicons } from '@expo/vector-icons'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import Toast from 'react-native-toast-message';
 
@@ -47,15 +48,24 @@ const ImageScreen = () => {
         if (Platform.OS == 'web') {
             const anchor = document.createElement('a');
             anchor.href = imageUrl;
-            anchor.target ="_blank";
-            anchor.download = fileName   || "download";
+            anchor.target = "_blank";
+            anchor.download = fileName || "download";
             document.body.appendChild(anchor);
             anchor.click();
             document.body.removeChild(anchor);
         } else {
-        setStatus('downloading');
-        let uri = await downloadFile();
-        if (uri) showToast('Image Downloaded')
+            const { status } = await MediaLibrary.requestPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Permission denied', 'You need to allow permission to save the image');
+                return;
+            }
+            setStatus('downloading');
+            let uri = await downloadFile();
+            if (uri) {
+                const asset = await MediaLibrary.createAssetAsync(uri);
+                await MediaLibrary.createAlbumAsync('Download', asset, false);
+                showToast('Image Downloaded');
+            }
         }
     };
     // share image action
@@ -76,7 +86,7 @@ const ImageScreen = () => {
 
     const downloadFile = async () => {
         try {
-            const { uri } = await FileSystem.downloadAsync(imageUrl, filePath)
+            const { uri } = await FileSystem.downloadAsync(imageUrl, filePath);
             setStatus('');
             console.log('downloaded at:', uri);
             return uri;
