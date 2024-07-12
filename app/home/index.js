@@ -174,7 +174,7 @@ const HomeScreen = () => {
   console.log('Selected filter:', filters);
 
   return (
-    <View style={[styles.container, { paddingTop: 16 }]}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <View style={styles.header}>
         <Pressable onPress={handleScrollUp}>
           <Image source={require('../../assets/images/adaptive-icon.png')} style={styles.iconImage} />
