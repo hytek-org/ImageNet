@@ -10,7 +10,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const Layout = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      < BottomSheetModalProvider>
+      <BottomSheetModalProvider>
         <Stack>
           <Stack.Screen
             name="index"
