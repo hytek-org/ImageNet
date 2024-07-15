@@ -1,11 +1,15 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text,StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { hp, wp } from '../../helpers/comman';
+import { theme } from '../../constants/theme';
+import { Image } from 'expo-image';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 const Create = () => {
   const { top } = useSafeAreaInsets();
   return (
-    <View className="flex-1 bg-white p-4" style={{ paddingTop: top }}>
-      <View className="items-center mb-6">
+    <View style={styles.container}>
+      {/* <View className="items-center mb-6">
         <Text className="text-3xl font-bold">Create New Image</Text>
       </View>
 
@@ -39,10 +43,30 @@ const Create = () => {
         <TouchableOpacity className="mt-6 bg-blue-500 p-4 rounded-lg items-center">
           <Text className="text-white text-lg font-semibold">Submit</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
+      <Animated.View entering={FadeInDown.springify().delay(300).damping()}>
+      <Text style={styles.title}>The New Features Are </Text>
+      <Image source={require('../../assets/images/coming.jpg')} style={styles.bgImage}/>
+      </Animated.View>
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  
+title:{
+  paddingTop:'50%',
+  paddingBottom:12,
+  textAlign:'center',
+  fontSize:hp(3),
+  fontWeight: theme.fontWeights.semibold,
+  
+},
+bgImage:{
+  height:'60%',
+  width:'100%',
+}
+})
 
 export default Create
 
