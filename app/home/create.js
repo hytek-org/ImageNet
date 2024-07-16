@@ -1,72 +1,219 @@
-import React from 'react';
-import { View, Text,StyleSheet } from 'react-native';
+import React, { useState, useCallback, useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, Modal, TextInput,  } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { hp, wp } from '../../helpers/comman';
-import { theme } from '../../constants/theme';
 import { Image } from 'expo-image';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { AntDesign} from '@expo/vector-icons';
+
+
 const Create = () => {
   const { top } = useSafeAreaInsets();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const headingRef = useRef(null);
+  const subheadingRef = useRef(null);
+  const buttonRef = useRef(null);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [subscribeMailList, setSubscribeMailList] = useState(false);
+  const [developmentUpdates, setDevelopmentUpdates] = useState(false);
+  const [productUpdates, setProductUpdates] = useState(false);
+
+
   return (
     <View style={styles.container}>
-      {/* <View className="items-center mb-6">
-        <Text className="text-3xl font-bold">Create New Image</Text>
-      </View>
-
-      <View className="space-y-4">
-        <View className="mb-4">
-          <Text className="text-lg font-semibold mb-2">Image Title</Text>
-          <TextInput 
-            placeholder="Enter image title"
-            className="border border-gray-300 p-2 rounded-lg"
-          />
-        </View>
-
-        <View className="mb-4">
-          <Text className="text-lg font-semibold mb-2">Image URL</Text>
-          <TextInput 
-            placeholder="Enter image URL"
-            className="border border-gray-300 p-2 rounded-lg"
-          />
-        </View>
-
-        <View className="mb-4">
-          <Text className="text-lg font-semibold mb-2">Description</Text>
-          <TextInput 
-            placeholder="Enter image description"
-            className="border border-gray-300 p-2 rounded-lg"
-            multiline={true}
-            numberOfLines={4}
-          />
-        </View>
-
-        <TouchableOpacity className="mt-6 bg-blue-500 p-4 rounded-lg items-center">
-          <Text className="text-white text-lg font-semibold">Submit</Text>
-        </TouchableOpacity>
-      </View> */}
-      <Animated.View entering={FadeInDown.springify().delay(300).damping()}>
-      <Text style={styles.title}>The New Features Are </Text>
-      <Image source={require('../../assets/images/coming.jpg')} style={styles.bgImage}/>
+      {/* Background Image */}
+      <Animated.View style={styles.imageDiv} entering={FadeInDown}>
+        <Image
+          source={require('../../assets/images/coming.png')}
+          style={styles.bgImage}
+          resizeMode='cover'
+        />
       </Animated.View>
+
+      {/* Brand Name */}
+      <Text style={styles.brandName}>ImageNet</Text>
+
+      {/* Content */}
+      <Animated.View className="mb-32" style={styles.content} entering={FadeInDown.springify().delay(300).damping()}>
+        <Animated.Text ref={headingRef} style={styles.heading} entering={FadeInDown.springify().delay(300).damping()}>
+          Coming Soon
+        </Animated.Text>
+        <Animated.Text ref={subheadingRef} style={styles.subheading} entering={FadeInDown.springify().delay(300).damping()}>
+          New Feature in development!
+        </Animated.Text>
+        <Pressable ref={buttonRef} style={styles.button} onPress={() => setModalVisible(true)}>
+          <Text style={styles.buttonText}>Get Notify</Text>
+        </Pressable>
+      </Animated.View>
+
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer} className="flex-1 justify-center items-center bg-transparent bg-opacity-50">
+          <View className="bg-white  p-2 rounded-lg w-80 flex flex-col justify-between  bg-opacity-95 h-[500px]">
+            <View className="flex flex-row justify-between  h-16">
+              <Text style={styles.modalTitle}>Get Notified</Text>
+              <Pressable className="mr-4" onPress={() => setModalVisible(false)} >
+              <AntDesign  size={28} name='closecircleo' />
+              </Pressable>
+            </View>
+            <View className="flex flex-col  ">
+            <TextInput
+                style={styles.input}
+                placeholder="Enter your email"
+                placeholderTextColor="#999"
+                onChangeText={setEmail}
+                value={email}
+              />
+            <View style={styles.checkboxContainer}>
+              <View style={styles.checkbox}>
+                <TextInput
+                  value={agreePrivacy}
+                  onValueChange={setAgreePrivacy}
+                />
+                <Text style={styles.checkboxLabel}>Agree to Privacy Policy</Text>
+              </View>
+              <View style={styles.checkbox}>
+                <TextInput
+                  value={agreeTerms}
+                  onValueChange={setAgreeTerms}
+                />
+                <Text style={styles.checkboxLabel}>Agree to Terms of Service</Text>
+              </View>
+              <View style={styles.checkbox}>
+                <TextInput
+                  value={subscribeMailList}
+                  onValueChange={setSubscribeMailList}
+                />
+                <Text style={styles.checkboxLabel}>Subscribe to Hytek Mail List</Text>
+              </View>
+              <View style={styles.checkbox}>
+                <TextInput
+                  value={developmentUpdates}
+                  onValueChange={setDevelopmentUpdates}
+                />
+                <Text style={styles.checkboxLabel}>Receive Development Updates</Text>
+              </View>
+              <View style={styles.checkbox}>
+                <TextInput
+                  value={productUpdates}
+                  onValueChange={setProductUpdates}
+                />
+                <Text style={styles.checkboxLabel}>Receive Product Updates</Text>
+              </View>
+            </View>
+        
+            </View>
+            <Pressable className=" w-52 mb-12 bg-transparent mx-auto py-4 px-2 rounded-full  border-2 border-black/40   " onPress={() => { setModalVisible(false); /* handle email submission */ }}>
+              <Text className="text-black text-center text-lg">Submit</Text>
+            </Pressable>
+            {/* <Button title="Submit"  /> */}
+            
+          </View>
+        </View>
+      </Modal>
     </View>
+
+
   )
 }
 
 const styles = StyleSheet.create({
-  
-title:{
-  paddingTop:'50%',
-  paddingBottom:12,
-  textAlign:'center',
-  fontSize:hp(3),
-  fontWeight: theme.fontWeights.semibold,
-  
-},
-bgImage:{
-  height:'60%',
-  width:'100%',
-}
-})
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'black',
+  },
+  imageDiv: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  bgImage: {
+    width: '100%',
+    height: '100%',
+    opacity: 0.5,
+  },
+  brandName: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  heading: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 10,
+  },
+  subheading: {
+    fontSize: 18,
+    color: 'white',
+    marginBottom: 20,
+  },
+  button: {
+    marginTop: 16,
+    width: 200,
+    paddingVertical: 10,
+    borderRadius: 25,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+  },
+
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 20,
+    margin:'auto'
+  },
+  checkboxContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  checkbox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 0,
+  },
+  checkboxLabel: {
+    marginLeft: 8,
+    fontSize: 16,
+  },
+});
+
 
 export default Create
 
