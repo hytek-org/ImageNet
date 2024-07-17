@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AntDesign, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { SavedImagesProvider } from '../context/SavedImagesContext';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -64,7 +66,7 @@ const TabNavigator = () => (
 
 const Layout = () => {
   return (
-   
+    <SavedImagesProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -81,6 +83,7 @@ const Layout = () => {
         </Stack.Navigator>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
+    </SavedImagesProvider>
    
   );
 };

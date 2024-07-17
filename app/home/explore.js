@@ -3,11 +3,13 @@ import { View, Text, Image, FlatList, Dimensions, TouchableOpacity, ActivityIndi
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { apiCall } from '../../api'; // Adjust the path as necessary
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSavedImages } from '../../context/SavedImagesContext'; 
 
 const { height } = Dimensions.get('window');
 
 const Explore = () => {
   const { top } = useSafeAreaInsets();
+  const { saveImage } = useSavedImages();
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -29,16 +31,9 @@ const Explore = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const saveImage = async (image) => {
-    try {
-      const savedImages = JSON.parse(await AsyncStorage.getItem('savedImages')) || [];
-      const updatedImages = [...savedImages, image];
-      await AsyncStorage.setItem('savedImages', JSON.stringify(updatedImages));
-      Alert.alert('Success', 'Image saved successfully!');
-    } catch (error) {
-      Alert.alert('Error', 'Failed to save the image.');
-      console.error('Failed to save the image:', error);
-    }
+  const handleSaveImage = (image) => {
+    saveImage(image);
+    Alert.alert('Success', 'Image saved successfully!');
   };
 
   const renderItem = ({ item }) => (
@@ -53,7 +48,7 @@ const Explore = () => {
           <TouchableOpacity style={{ backgroundColor: 'green', padding: 10, borderRadius: 5, marginRight: 10 }}>
             <Text style={{ color: 'white', fontSize: 16 }}>Download</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => saveImage(item)} style={{ backgroundColor: 'orange', padding: 10, borderRadius: 5 }}>
+          <TouchableOpacity onPress={() => handleSaveImage(item)} style={{ backgroundColor: 'orange', padding: 10, borderRadius: 5 }}>
             <Text style={{ color: 'white', fontSize: 16 }}>Save</Text>
           </TouchableOpacity>
         </View>

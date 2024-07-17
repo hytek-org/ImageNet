@@ -2,36 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useSavedImages } from '../../context/SavedImagesContext';
 
 const Save = () => {
   const { top } = useSafeAreaInsets();
-  const [savedImages, setSavedImages] = useState([]);
+  const { savedImages, deleteImage } = useSavedImages();
 
-  useEffect(() => {
-    fetchSavedImages();
-  }, []);
-
-  const fetchSavedImages = async () => {
-    try {
-      const savedImages = JSON.parse(await AsyncStorage.getItem('savedImages')) || [];
-      setSavedImages(savedImages);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to load saved images.');
-      console.error('Failed to load saved images:', error);
-    }
+  const handleDeleteImage = (imageId) => {
+    deleteImage(imageId);
+    Alert.alert('Success', 'Image deleted successfully!');
   };
 
-  const deleteImage = async (image) => {
-    try {
-      const updatedImages = savedImages.filter((img) => img.id !== image.id);
-      await AsyncStorage.setItem('savedImages', JSON.stringify(updatedImages));
-      setSavedImages(updatedImages);
-      Alert.alert('Success', 'Image deleted successfully!');
-    } catch (error) {
-      Alert.alert('Error', 'Failed to delete the image.');
-      console.error('Failed to delete the image:', error);
-    }
-  };
+
+
+
 
   return (
     <ScrollView className="flex-1 bg-white p-4" style={{ paddingTop: top }}>
@@ -39,29 +24,39 @@ const Save = () => {
         <Text className="text-3xl font-bold">Saved Images</Text>
       </View>
 
-      <View className="space-y-4">
+      <View className="space-y-4 mb-10">
         {savedImages.map((image) => (
-          <View key={image.id} className="p-4 bg-gray-100 rounded-lg shadow">
-            <View className="flex-row items-center mb-4">
-              <Image
-                source={{ uri: image.largeImageURL }}
-                className="w-20 h-20 rounded-lg"
-              />
+          <View key={image.id} className="p-4 bg-gray-100 rounded-lg shadow border border-black/10">
+            <View className="flex-row items-center mb-4 ">
+              <View className="border border-black/50 p-0.5 rounded-lg">
+                <Image
+                  source={{ uri: image.largeImageURL }}
+                  className="w-20 h-32 rounded-lg  "
+                />
+              </View>
+
               <View className="ml-4 flex-1">
+                <View className="flex-row justify-end space-x-4 mb-2">
+
+                  <TouchableOpacity className="bg-white px-2 py-1.5 rounded-lg">
+                    <MaterialIcons name='share' size={28} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleDeleteImage(image.id)} className="bg-white px-2 py-1.5 rounded-lg">
+                    <MaterialIcons name='delete-outline' size={28} />
+                  </TouchableOpacity>
+                </View>
                 <Text className="text-lg font-semibold">{image.tags}</Text>
+
+                <View className="flex flex-row space-x-4 items-center justify-between">
+                  <Text className="text-sm font-normal">Image by <Text className="underline italic">{image.user}</Text></Text>
+                  <Image
+                    source={{ uri: image.userImageURL }}
+                    className="w-10 h-10 rounded-lg"
+                  />
+                </View>
               </View>
             </View>
-            <View className="flex-row justify-between">
-              <TouchableOpacity className="bg-blue-500 p-2 rounded-lg">
-                <Text className="text-white text-base">View</Text>
-              </TouchableOpacity>
-              <TouchableOpacity className="bg-green-500 p-2 rounded-lg">
-                <Text className="text-white text-base">Share</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteImage(image)} className="bg-red-500 p-2 rounded-lg">
-                <Text className="text-white text-base">Delete</Text>
-              </TouchableOpacity>
-            </View>
+
           </View>
         ))}
       </View>
