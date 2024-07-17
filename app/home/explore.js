@@ -1,11 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, Image, FlatList, Dimensions, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import {StatusBar, View, Text, Image, FlatList, Dimensions, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { apiCall } from '../../api'; // Adjust the path as necessary
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSavedImages } from '../../context/SavedImagesContext'; 
+import { useSavedImages } from '../../context/SavedImagesContext';
 
-const { height } = Dimensions.get('window');
+
+
+// Function to shuffle an array
+const shuffleArray = (array) => {
+  let shuffledArray = array.slice();
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
 
 const Explore = () => {
   const { top } = useSafeAreaInsets();
@@ -22,7 +31,14 @@ const Explore = () => {
     setLoading(true);
     const res = await apiCall(params);
     if (res.success && res.data.hits) {
-      setImages((prevImages) => [...prevImages, ...res.data.hits]);
+      const shuffledImages = shuffleArray(res.data.hits);
+      setImages((prevImages) => {
+        // Filter out duplicates
+        const uniqueNewImages = shuffledImages.filter(
+          (newImage) => !prevImages.some((existingImage) => existingImage.id === newImage.id)
+        );
+        return [...prevImages, ...uniqueNewImages];
+      });
     }
     setLoading(false);
   };
@@ -37,9 +53,11 @@ const Explore = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View style={{ height: height, justifyContent: 'center', alignItems: 'center', padding: 10 }}>
-      <Image source={{ uri: item.largeImageURL }} style={{ width: '100%', height: '80%', borderRadius: 15 }} resizeMode="cover" />
-      <View style={{ position: 'absolute', bottom: 50, left: 20 }}>
+    <View className="h-screen justify-center items-center">
+      <View className="h-full w-full py-2 bg-white opacity-90">
+        <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded" resizeMode="cover" />
+      </View>
+      <View style={{ position: 'absolute', bottom: 200, left: 20 }}>
         <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>{item.tags}</Text>
         <View style={{ flexDirection: 'row', marginTop: 10 }}>
           <TouchableOpacity style={{ backgroundColor: 'blue', padding: 10, borderRadius: 5, marginRight: 10 }}>
@@ -57,17 +75,19 @@ const Explore = () => {
   );
 
   return (
+   <View>
+     <StatusBar style='light' />
     <FlatList
       data={images}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
       pagingEnabled
       showsVerticalScrollIndicator={false}
-      style={{ paddingTop: top }}
       onEndReached={handleLoadMore}
       onEndReachedThreshold={0.5}
-      ListFooterComponent={loading && <ActivityIndicator size="large" color="#0000ff" />}
+      ListFooterComponent={loading && <ActivityIndicator size="large" color="#101010" />}
     />
+    </View>
   );
 };
 
