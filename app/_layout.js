@@ -16,7 +16,7 @@ import ExploreScreen from './home/explore';
 import CreateScreen from './home/create';
 import SaveScreen from './home/save';
 import ProfileScreen from './home/profile';
-
+import IndexScreen from './index';
 
 
 
@@ -69,18 +69,18 @@ const Layout = () => {
     <SavedImagesProvider>
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" component={TabNavigator} />
-          <Stack.Screen name="home/index" component={HomeScreen} />
-          <Stack.Screen
-            name="home/image"
-            component={ImageScreen}
-            options={{ 
-              presentation: 'transparentModal',
-              animationTypeForReplace: 'pop',
-            }} 
-          />
-        </Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="index">
+            <Stack.Screen name="index" component={IndexScreen} />
+            <Stack.Screen name="home/index" component={TabNavigator} />
+            <Stack.Screen
+              name="home/image"
+              component={ImageScreen}
+              options={{
+                presentation: 'transparentModal',
+                animationTypeForReplace: 'pop',
+              }}
+            />
+          </Stack.Navigator>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
     </SavedImagesProvider>

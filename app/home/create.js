@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal, TextInput, } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeInDown, RotateInUpRight } from 'react-native-reanimated';
 import { AntDesign } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
 
@@ -36,6 +36,10 @@ const Create = () => {
 
       {/* Content */}
       <Animated.View className="mb-32" style={styles.content} entering={FadeInDown.springify().delay(300).damping()}>
+      <Animated.Image entering={FadeInDown.springify().delay(300).damping()}
+            source={require('../../assets/images/icon.png')}
+             className="w-40 h-40 rounded-full bg-transparent opacity-90"
+           />
         <Animated.Text ref={headingRef} style={styles.heading} entering={FadeInDown.springify().delay(300).damping()}>
           Coming Soon
         </Animated.Text>

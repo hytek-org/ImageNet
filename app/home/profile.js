@@ -1,18 +1,22 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { Octicons } from '@expo/vector-icons';
 const Profile = () => {
   const { top } = useSafeAreaInsets();
+
+
   return (
     <ScrollView style={{ paddingTop: top, paddingHorizontal: 16, backgroundColor: '#fff' }}>
     <View style={styles.container}>
       <Text style={styles.title}>About ImageNet</Text>
-      <Image source={require('../../assets/images/icon.png')} className="w-52 h-52 mx-auto" />
+      <Image source={require('../../assets/images/icon.png')} style={styles.image} />
 
       <Text style={styles.sectionTitle}>Welcome</Text>
       <Text style={styles.text}>
-        Welcome to ImageNet, the ultimate solution for seamless image search and downloads on your Android device. 
-        Developed by Rahul Dev at HYTEK organization, ImageNet is designed to provide a user-friendly experience 
+        Welcome to ImageNet, the ultimate solution for seamless image search and downloads on your Android device.
+        Developed by Rahul Dev at HYTEK organization, ImageNet is designed to provide a user-friendly experience
         with powerful features to meet all your image management needs.
       </Text>
 
@@ -55,6 +59,22 @@ const Profile = () => {
         serve photographers, designers, and creative professionals worldwide. We hope you enjoy using ImageNet as much
         as we enjoyed building it.
       </Text>
+
+      {/* Share and Rate Section */}
+      <View className="border mb-10 " style={styles.shareContainer}>
+        <Text style={styles.sectionTitle}>Enjoying ImageNet?</Text>
+        <Text style={styles.text}>
+          If you love using ImageNet, please take a moment to rate us on the Play Store or share our app with your friends and colleagues.
+        </Text>
+        <View style={styles.buttonContainer}>
+          <Link href={'https://play.google.com/store/apps/details?id=com.hytek.imagenet'}  style={styles.button}>
+            <Text style={styles.buttonText} className="flex flex-row space-x-2 justify-between"><Octicons name='star'  size={20}/> Rate Us</Text>
+          </Link>
+          <Link href={'https://play.google.com/store/apps/details?id=com.hytek.imagenet'} style={styles.button}>
+            <Text style={styles.buttonText} className="flex flex-row space-x-2 justify-between"><Octicons name='share-android'  size={20}/> Share App</Text>
+          </Link>
+        </View>
+      </View>
     </View>
   </ScrollView>
   )
@@ -62,28 +82,57 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 16,
+    flex: 1,
+    paddingBottom: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginVertical: 16,
     textAlign: 'center',
-    marginBottom: 20,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
+    marginVertical: 16,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
   },
   text: {
     fontSize: 16,
     lineHeight: 24,
-    marginBottom: 16,
+    marginBottom: 10,
   },
   boldText: {
     fontWeight: 'bold',
   },
-
+  shareContainer: {
+    marginTop: 20,
+    padding: 16,
+    borderRadius: 8,
+    backgroundColor: '#f9f9f9',
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default Profile;

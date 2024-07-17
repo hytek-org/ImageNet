@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, Pressable, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -25,28 +25,42 @@ const Save = () => {
       </View>
 
       <View className="space-y-4 mb-10">
-        {savedImages.map((image) => (
+      {savedImages.length === 0 ? (
+       <View  className="p-4 bg-gray-100 rounded-lg shadow border border-black/10">
+       <View className="flex-row items-center mb-4 ">
+         <View className="border border-black/50 p-0.5 rounded-lg">
+           <Image
+            source={require('../../assets/images/icon.png')}
+             className="w-20 h-32 rounded-lg"
+           />
+         </View>
+         <View className="ml-4 flex-1">
+        
+           <Text className="text-lg font-semibold">No saved images available</Text>
+          
+         </View>
+       </View>
+     </View>
+      ) : (
+        savedImages.map((image) => (
           <View key={image.id} className="p-4 bg-gray-100 rounded-lg shadow border border-black/10">
             <View className="flex-row items-center mb-4 ">
               <View className="border border-black/50 p-0.5 rounded-lg">
                 <Image
                   source={{ uri: image.largeImageURL }}
-                  className="w-20 h-32 rounded-lg  "
+                  className="w-20 h-32 rounded-lg"
                 />
               </View>
-
               <View className="ml-4 flex-1">
                 <View className="flex-row justify-end space-x-4 mb-2">
-
-                  <TouchableOpacity className="bg-white px-2 py-1.5 rounded-lg">
+                  <Pressable className="bg-white px-2 py-1.5 rounded-lg">
                     <MaterialIcons name='share' size={28} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleDeleteImage(image.id)} className="bg-white px-2 py-1.5 rounded-lg">
+                  </Pressable>
+                  <Pressable onPress={() => handleDeleteImage(image.id)} className="bg-white px-2 py-1.5 rounded-lg">
                     <MaterialIcons name='delete-outline' size={28} />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
                 <Text className="text-lg font-semibold">{image.tags}</Text>
-
                 <View className="flex flex-row space-x-4 items-center justify-between">
                   <Text className="text-sm font-normal">Image by <Text className="underline italic">{image.user}</Text></Text>
                   <Image
@@ -56,9 +70,9 @@ const Save = () => {
                 </View>
               </View>
             </View>
-
           </View>
-        ))}
+        ))
+      )}
       </View>
     </ScrollView>
   );

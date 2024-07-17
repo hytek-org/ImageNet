@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, View, Text,FlatList, TouchableOpacity, ActivityIndicator, Alert, Platform } from 'react-native';
+import { StatusBar, View, Text, FlatList, Pressable, ActivityIndicator, Alert, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { apiCall } from '../../api'; // Adjust the path as necessary
 import { useSavedImages } from '../../context/SavedImagesContext';
@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import Toast from 'react-native-toast-message';
-import { Entypo, Octicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 
 // Function to shuffle an array
@@ -20,6 +20,8 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
+
+
 const Explore = () => {
   const { top } = useSafeAreaInsets();
   const { saveImage } = useSavedImages();
@@ -28,6 +30,7 @@ const Explore = () => {
   const [loading, setLoading] = useState(false);
   const [loadingshare, setLoadingShare] = useState(false);
   const [loadingdownload, setLoadingDownload] = useState(false);
+  const [loadingsave, setLoadingSave] = useState(false);
 
   // Function to handle image download
   const handleDownloadImage = async (imageUrl, fileName) => {
@@ -115,9 +118,9 @@ const Explore = () => {
 
   // Function to render each image item
   const renderItem = ({ item }) => (
-    <View className="h-screen justify-center items-center">
+    <View className="h-screen justify-between items-center ">
       <View className="h-full w-full py-2 bg-white opacity-90">
-        <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded" resizeMode="cover" />
+        <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded " resizeMode="cover" />
         <View className="flex flex-row space-x-4 items-center justify-between">
           <Text className="text-sm font-normal">Image by <Text className="underline italic">{item.user}</Text>
           </Text>
@@ -127,25 +130,35 @@ const Explore = () => {
           />
         </View>
       </View>
-      <View style={{ position: 'absolute', bottom: 200, left: 20 }}>
-        <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>{item.tags}</Text>
-        <View style={styles.buttonItems}>
-          <TouchableOpacity onPress={() => handleShareImage(item.largeImageURL)} style={styles.button}>
+      <View className="absolute h-full bottom-8 flex flex-row justify-between w-full bg-black/20   pl-4 pr-4 ">
+        
+        <View className=" flex flex-col justify-end">
+          <Text className="w-64 z-50"  style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>{item.tags}</Text>
+          <View className="flex flex-row space-x-4 items-center justify-between">
+            <Text className="text-sm font-normal text-white ">Image by <Text className="underline italic">{item.user}</Text></Text>
+          </View>
+        </View>
+        <View  className="flex flex-col space-y-2 justify-end items-center">
+          <Pressable onPress={() => handleShareImage(item.largeImageURL)} className="rounded-lg" style={styles.button}>
             {loadingshare ? <ActivityIndicator size="small" color="white" /> : <Entypo name='share' size={22} color='white' />}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleDownloadImage(item.largeImageURL, item.id.toString())} style={styles.button}>
+          </Pressable>
+          <Pressable className="rounded-lg px-3.5" onPress={() => handleDownloadImage(item.largeImageURL, item.id.toString())} style={styles.button}>
             {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='download' size={24} color='white' />}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleSaveImage(item)} style={styles.button}>
-          {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='star' size={24} color='white' />}
-          </TouchableOpacity>
+          </Pressable>
+          <Pressable className="rounded-lg" onPress={() => handleSaveImage(item)} style={styles.button}>
+            {loadingsave ? <ActivityIndicator size="small" color="white" /> : <MaterialIcons name='bookmark-outline' size={24} color='white' />}
+          </Pressable>
+          <Image
+            source={{ uri: item.userImageURL }}
+            className="w-10 h-10 rounded-full border border-white "
+          />
         </View>
       </View>
     </View>
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View >
       <StatusBar style="light" />
       <FlatList
         data={images}
@@ -161,15 +174,14 @@ const Explore = () => {
 };
 
 const styles = {
-  buttonItems:{
-    width:'100%',
-    alignItems:'flex-end'
+  buttonItems: {
+    width: '100%',
+    alignItems: 'flex-end'
 
   },
   button: {
-    backgroundColor: 'rgba(255,255,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     padding: 10,
-    borderRadius: 5,
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center'

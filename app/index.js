@@ -6,7 +6,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated'
 import { theme } from '../constants/theme'
 import { useRouter } from 'expo-router'
 import { Image } from 'expo-image'
-const index = () => {
+const Index = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -81,7 +81,7 @@ const index = () => {
   )
 }
 
-export default index
+export default Index;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
