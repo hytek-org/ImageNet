@@ -36,10 +36,12 @@ const Create = () => {
 
       {/* Content */}
       <Animated.View className="mb-32" style={styles.content} entering={FadeInDown.springify().delay(300).damping()}>
-      <Animated.Image entering={FadeInDown.springify().delay(300).damping()}
+      <Animated.View>
+      <Image style={styles.LogoImage} entering={FadeInDown.springify().delay(300).damping()}
             source={require('../../assets/images/icon.png')}
-             className="w-40 h-40 rounded-full bg-transparent opacity-90"
+             className="w-40 h-40 rounded-full bg-transparent  ease-linear opacity-90"
            />
+      </Animated.View>
         <Animated.Text ref={headingRef} style={styles.heading} entering={FadeInDown.springify().delay(300).damping()}>
           Coming Soon
         </Animated.Text>
@@ -195,6 +197,9 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 20,
   },
+  LogoImage:{
+   
+  }
 
 });
 

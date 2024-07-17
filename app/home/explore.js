@@ -43,9 +43,11 @@ const Explore = () => {
       const { uri } = await FileSystem.downloadAsync(imageUrl, fileUri);
       console.log('Image downloaded to:', uri);
 
+
       const asset = await MediaLibrary.createAssetAsync(uri);
       await MediaLibrary.createAlbumAsync('Download', asset, false);
       showToast('Image Downloaded');
+      Alert.alert('Success', 'Image Downloaded');
     } catch (error) {
       console.error('Error downloading image:', error);
       Alert.alert('Error', 'Failed to download image');
@@ -78,6 +80,15 @@ const Explore = () => {
       position: 'bottom'
     });
   };
+  const toastConfig = {
+    success: ({ text1, props, ...rest }) => {
+        return (
+            <View style={styles.toast}>
+                <Text style={styles.toastText}>{text1}</Text>
+            </View>
+        )
+    }
+}
 
   useEffect(() => {
     fetchImages({ page });
@@ -154,6 +165,7 @@ const Explore = () => {
           />
         </View>
       </View>
+      
     </View>
   );
 
