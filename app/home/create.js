@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { View, Text, StyleSheet, Pressable, Modal, TextInput,  } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal, TextInput, } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { AntDesign} from '@expo/vector-icons';
-
+import { AntDesign } from '@expo/vector-icons';
+import Checkbox from 'expo-checkbox';
 
 const Create = () => {
   const { top } = useSafeAreaInsets();
@@ -59,61 +59,49 @@ const Create = () => {
             <View className="flex flex-row justify-between  h-16">
               <Text style={styles.modalTitle}>Get Notified</Text>
               <Pressable className="mr-4" onPress={() => setModalVisible(false)} >
-              <AntDesign  size={28} name='closecircleo' />
+                <AntDesign size={28} name='closecircleo' />
               </Pressable>
             </View>
             <View className="flex flex-col  ">
-            <TextInput
-                style={styles.input}
-                placeholder="Enter your email"
-                placeholderTextColor="#999"
-                onChangeText={setEmail}
-                value={email}
-              />
-            <View style={styles.checkboxContainer}>
-              <View style={styles.checkbox}>
-                <TextInput
-                  value={agreePrivacy}
-                  onValueChange={setAgreePrivacy}
-                />
-                <Text style={styles.checkboxLabel}>Agree to Privacy Policy</Text>
+
+              <View className="ml-4" style={styles.checkboxContainer}>
+                <View className="flex flex-row space-x-2 mb-2">
+                  <Checkbox className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" value={agreePrivacy} onValueChange={setAgreePrivacy} />
+                  <Text className="text-sm text-gray-500 ms-3 dark:text-neutral-400">Agree to Privacy Policy</Text>
+                </View>
+                <View className="flex flex-row space-x-2 mb-2">
+                  <Checkbox className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" value={agreeTerms} onValueChange={setAgreeTerms} />
+                  <Text className="text-sm text-gray-500 ms-3 dark:text-neutral-400">Agree to Terms of Service</Text>
+                </View>
+                <View className="flex flex-row space-x-2 mb-2">
+                  <Checkbox className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" value={subscribeMailList} onValueChange={setSubscribeMailList} />
+                  <Text className="text-sm text-gray-500 ms-3 dark:text-neutral-400">Subscribe to Hytek Mail List</Text>
+                </View>
+                <View className="flex flex-row space-x-2 mb-2">
+
+                  <Checkbox className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" value={developmentUpdates} onValueChange={setDevelopmentUpdates} />
+                  <Text className="text-sm text-gray-500 ms-3 dark:text-neutral-400">Receive Development Updates</Text>
+                </View>
+                <View className="flex flex-row space-x-2 mb-2">
+                  <Checkbox className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" value={productUpdates} onValueChange={setProductUpdates} />
+                  <Text className="text-sm text-gray-500 ms-3 dark:text-neutral-400">Receive Product Updates</Text>
+                </View>
               </View>
-              <View style={styles.checkbox}>
+              <View>
                 <TextInput
-                  value={agreeTerms}
-                  onValueChange={setAgreeTerms}
+                  style={styles.input}
+                  placeholder="Enter your email"
+                  placeholderTextColor="#999"
+                  onChangeText={setEmail}
+                  value={email}
                 />
-                <Text style={styles.checkboxLabel}>Agree to Terms of Service</Text>
               </View>
-              <View style={styles.checkbox}>
-                <TextInput
-                  value={subscribeMailList}
-                  onValueChange={setSubscribeMailList}
-                />
-                <Text style={styles.checkboxLabel}>Subscribe to Hytek Mail List</Text>
-              </View>
-              <View style={styles.checkbox}>
-                <TextInput
-                  value={developmentUpdates}
-                  onValueChange={setDevelopmentUpdates}
-                />
-                <Text style={styles.checkboxLabel}>Receive Development Updates</Text>
-              </View>
-              <View style={styles.checkbox}>
-                <TextInput
-                  value={productUpdates}
-                  onValueChange={setProductUpdates}
-                />
-                <Text style={styles.checkboxLabel}>Receive Product Updates</Text>
-              </View>
-            </View>
-        
             </View>
             <Pressable className=" w-52 mb-12 bg-transparent mx-auto py-4 px-2 rounded-full  border-2 border-black/40   " onPress={() => { setModalVisible(false); /* handle email submission */ }}>
               <Text className="text-black text-center text-lg">Submit</Text>
             </Pressable>
             {/* <Button title="Submit"  /> */}
-            
+
           </View>
         </View>
       </Modal>
@@ -196,22 +184,14 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     marginBottom: 20,
-    margin:'auto'
+    margin: 'auto'
   },
   checkboxContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
     marginBottom: 20,
   },
-  checkbox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 0,
-  },
-  checkboxLabel: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
+
 });
 
 

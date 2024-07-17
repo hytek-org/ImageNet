@@ -1,47 +1,90 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const Profile = () => {
   const { top } = useSafeAreaInsets();
   return (
-    <ScrollView className="flex-1 bg-white p-4" style={{ paddingTop: top }}>
-    <View className="items-center mb-6">
-      <Image 
-        source={{ uri: 'https://via.placeholder.com/150' }}
-        className="w-32 h-32 rounded-full"
-      />
-      <Text className="text-4xl font-bold mt-4">John Doe</Text>
-      <Text className="text-lg text-gray-600 mt-2">Software Engineer</Text>
+    <ScrollView style={{ paddingTop: top, paddingHorizontal: 16, backgroundColor: '#fff' }}>
+    <View style={styles.container}>
+      <Text style={styles.title}>About ImageNet</Text>
+      <Image source={require('../../assets/images/icon.png')} className="w-52 h-52 mx-auto" />
+
+      <Text style={styles.sectionTitle}>Welcome</Text>
+      <Text style={styles.text}>
+        Welcome to ImageNet, the ultimate solution for seamless image search and downloads on your Android device. 
+        Developed by Rahul Dev at HYTEK organization, ImageNet is designed to provide a user-friendly experience 
+        with powerful features to meet all your image management needs.
+      </Text>
+
+      <Text style={styles.sectionTitle}>Key Features</Text>
+      <Text style={styles.text}>
+        - <Text style={styles.boldText}>User-Friendly Interface:</Text> Navigate effortlessly with our intuitive design.
+      </Text>
+      <Text style={styles.text}>
+        - <Text style={styles.boldText}>Advanced Filtering Options:</Text> Find exactly what you need with precise filters.
+      </Text>
+      <Text style={styles.text}>
+        - <Text style={styles.boldText}>Fast Image Downloads:</Text> Enjoy quick and efficient image downloads to save time.
+      </Text>
+      <Text style={styles.text}>
+        - <Text style={styles.boldText}>Built with React Native and Expo:</Text> Ensuring a smooth and reliable performance.
+      </Text>
+
+      <Text style={styles.sectionTitle}>Perfect for Professionals</Text>
+      <Text style={styles.text}>
+        ImageNet is perfect for photographers, designers, and anyone who needs efficient image management on the go.
+        Download now and experience the convenience of ImageNet!
+      </Text>
+
+      <Text style={styles.sectionTitle}>What's New</Text>
+      <Text style={styles.text}>
+        - Initial release with advanced image search capabilities.
+      </Text>
+      <Text style={styles.text}>
+        - Improved download speed for faster access to images.
+      </Text>
+      <Text style={styles.text}>
+        - Optimized for all Android devices for a seamless user experience.
+      </Text>
+
+      <Text style={styles.sectionTitle}>The Story Behind ImageNet</Text>
+      <Text style={styles.text}>
+        ImageNet was born out of a need for a more efficient and user-friendly way to manage images on mobile devices.
+        Rahul Dev, a developer at HYTEK organization, envisioned a tool that could provide powerful features without
+        compromising on usability. Through countless hours of development and user testing, ImageNet was created to
+        serve photographers, designers, and creative professionals worldwide. We hope you enjoy using ImageNet as much
+        as we enjoyed building it.
+      </Text>
     </View>
-
-    <View className="space-y-4">
-      <View className="p-4 bg-gray-100 rounded-lg">
-        <Text className="text-lg font-semibold mb-2">About Me</Text>
-        <Text className="text-base text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-        </Text>
-      </View>
-
-      <View className="p-4 bg-gray-100 rounded-lg">
-        <Text className="text-lg font-semibold mb-2">Contact Information</Text>
-        <Text className="text-base text-gray-700">Email: john.doe@example.com</Text>
-        <Text className="text-base text-gray-700">Phone: (123) 456-7890</Text>
-      </View>
-
-      <View className="p-4 bg-gray-100 rounded-lg">
-        <Text className="text-lg font-semibold mb-2">Skills</Text>
-        <Text className="text-base text-gray-700">- React Native</Text>
-        <Text className="text-base text-gray-700">- JavaScript</Text>
-        <Text className="text-base text-gray-700">- Tailwind CSS</Text>
-      </View>
-    </View>
-
-    <TouchableOpacity className="mt-6 bg-blue-500 p-4 rounded-lg items-center">
-      <Text className="text-white text-lg font-semibold">Edit Profile</Text>
-    </TouchableOpacity>
   </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 24,
+    marginBottom: 16,
+  },
+  boldText: {
+    fontWeight: 'bold',
+  },
+
+});
 
 export default Profile;
 

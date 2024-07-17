@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AntDesign, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -53,9 +53,9 @@ const TabNavigator = () => (
           headerShown: false
         }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{
-          title: 'Profile',
+          title: 'Share',
           tabBarIcon: ({ color, focused }) => (
-            <AntDesign  size={28} name={focused ? 'user' : 'user'} color={color} />
+            <MaterialIcons  size={28} name={focused ? 'share' : 'share'} color={color} />
           ),
           headerShown: false
         }} />
