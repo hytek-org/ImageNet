@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar, View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator, Alert, Platform } from 'react-native';
+import { StatusBar, View, Text,FlatList, TouchableOpacity, ActivityIndicator, Alert, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { apiCall } from '../../api'; // Adjust the path as necessary
 import { useSavedImages } from '../../context/SavedImagesContext';
@@ -8,6 +8,7 @@ import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import Toast from 'react-native-toast-message';
 import { Entypo, Octicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 
 // Function to shuffle an array
 const shuffleArray = (array) => {
@@ -35,10 +36,10 @@ const Explore = () => {
       const fileExtension = imageUrl.split('.').pop(); // Extracting file extension from URL
       const fileUri = `${FileSystem.documentDirectory}${fileName}.${fileExtension}`;
       console.log(`Downloading image from ${imageUrl} to ${fileUri}`);
-      
+
       const { uri } = await FileSystem.downloadAsync(imageUrl, fileUri);
       console.log('Image downloaded to:', uri);
-  
+
       const asset = await MediaLibrary.createAssetAsync(uri);
       await MediaLibrary.createAlbumAsync('Download', asset, false);
       showToast('Image Downloaded');
@@ -49,7 +50,7 @@ const Explore = () => {
       setLoadingDownload(false);
     }
   };
-  
+
   // Function to handle image share
   const handleShareImage = async (imageUrl) => {
     try {
@@ -114,22 +115,30 @@ const Explore = () => {
 
   // Function to render each image item
   const renderItem = ({ item }) => (
-      <View className="h-screen justify-center items-center">
+    <View className="h-screen justify-center items-center">
       <View className="h-full w-full py-2 bg-white opacity-90">
         <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded" resizeMode="cover" />
+        <View className="flex flex-row space-x-4 items-center justify-between">
+          <Text className="text-sm font-normal">Image by <Text className="underline italic">{item.user}</Text>
+          </Text>
+          <Image
+            source={{ uri: item.userImageURL }}
+            className="w-10 h-10 rounded-lg"
+          />
+        </View>
       </View>
       <View style={{ position: 'absolute', bottom: 200, left: 20 }}>
         <Text style={{ color: 'white', fontSize: 24, fontWeight: 'bold' }}>{item.tags}</Text>
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-        <TouchableOpacity onPress={() => handleShareImage(item.largeImageURL)} style={styles.button}>
-          {loadingshare ? <ActivityIndicator size="small" color="white" /> : <Entypo name='share' size={22} color='white' />}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleDownloadImage(item.largeImageURL, item.id.toString())} style={styles.button}>
-          {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='download' size={24} color='white' />}
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleSaveImage(item)} style={styles.button}>
-          <Text style={{ color: 'white', fontSize: 16 }}>Save</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonItems}>
+          <TouchableOpacity onPress={() => handleShareImage(item.largeImageURL)} style={styles.button}>
+            {loadingshare ? <ActivityIndicator size="small" color="white" /> : <Entypo name='share' size={22} color='white' />}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleDownloadImage(item.largeImageURL, item.id.toString())} style={styles.button}>
+            {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='download' size={24} color='white' />}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSaveImage(item)} style={styles.button}>
+          {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='star' size={24} color='white' />}
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -152,8 +161,13 @@ const Explore = () => {
 };
 
 const styles = {
+  buttonItems:{
+    width:'100%',
+    alignItems:'flex-end'
+
+  },
   button: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(255,255,0.2)',
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 5,
