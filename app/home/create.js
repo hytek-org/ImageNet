@@ -25,7 +25,7 @@ const Create = () => {
       {/* Background Image */}
       <Animated.View style={styles.imageDiv} entering={FadeInDown}>
         <Image
-          source={require('../../assets/images/coming.png')}
+          source={require('../../assets/images/light.png')}
           style={styles.bgImage}
           resizeMode='cover'
         />
