@@ -11,7 +11,6 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 import HomeScreen from './home/index';
-import ImageScreen from './home/image';
 import ExploreScreen from './home/explore';
 import CreateScreen from './home/create';
 import SaveScreen from './home/save';
@@ -72,14 +71,7 @@ const Layout = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="index">
             <Stack.Screen name="index" component={IndexScreen} />
             <Stack.Screen name="home/index" component={TabNavigator} />
-            {/* <Stack.Screen
-              name="home/image"
-              component={ImageScreen}
-              options={{
-                presentation: 'transparentModal',
-                animationTypeForReplace: 'pop',
-              }}
-            /> */}
+           
           </Stack.Navigator>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>
