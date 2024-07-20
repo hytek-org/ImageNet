@@ -72,14 +72,14 @@ const Layout = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="index">
             <Stack.Screen name="index" component={IndexScreen} />
             <Stack.Screen name="home/index" component={TabNavigator} />
-            <Stack.Screen
+            {/* <Stack.Screen
               name="home/image"
               component={ImageScreen}
               options={{
                 presentation: 'transparentModal',
                 animationTypeForReplace: 'pop',
               }}
-            />
+            /> */}
           </Stack.Navigator>
       </BottomSheetModalProvider>
     </GestureHandlerRootView>

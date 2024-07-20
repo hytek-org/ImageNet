@@ -1,13 +1,4 @@
-import {
-    View,
-    Text,
-    StyleSheet,
-    Button,
-    Platform,
-    ActivityIndicator,
-    Pressable,
-    Alert
-} from 'react-native'
+import { View, Text, StyleSheet,Platform, ActivityIndicator, Pressable, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { BlurView } from 'expo-blur'
 import { hp, wp } from '../../helpers/comman'
@@ -24,31 +15,25 @@ import Toast from 'react-native-toast-message';
 const ImageScreen = () => {
     const router = useRouter();
     const item = useLocalSearchParams();
-    const [status, setStatus] = useState('loading');
+    const [status, setStatus] = useState('loading')
     let uri = item?.webformatURL;
-    console.log('image:', item);
-
-    if (!uri) {
-        console.error('Invalid image URL');
-        Alert.alert('Error', 'Invalid image URL');
-        return null;
-    }
+    console.log('image:', item)
 
     // action for downloading
-    const fileName = item?.previewURL?.split('/').pop() || 'download.jpg';
+    const fileName = item?.previewURL?.split('/').pop();
     const imageUrl = uri;
-    const filePath = `${FileSystem.documentDirectory}${fileName}`;
+    const filePath = `${FileSystem.documentDirectory}${fileName}`
 
     const getSize = () => {
         const aspectRatio = item?.imageWidth / item?.imageHeight;
-        const maxWidth = Platform.OS === 'web' ? wp(50) : wp(92);
+
+        const maxWidth = Platform.OS == 'web' ? wp(50) : wp(92);
         let calculatedHeight = maxWidth / aspectRatio;
         let calculatedWidth = maxWidth;
+        if (aspectRatio < 1) { //potrait imahge
+            calculatedWidth = calculatedHeight * aspectRatio
 
-        if (aspectRatio < 1) {
-            calculatedWidth = calculatedHeight * aspectRatio;
         }
-
         return {
             width: calculatedWidth,
             height: calculatedHeight,
@@ -58,14 +43,13 @@ const ImageScreen = () => {
     const onLoad = () => {
         setStatus('');
     }
-
     // downloading action
     const handleDownloadImage = async () => {
-        if (Platform.OS === 'web') {
+        if (Platform.OS == 'web') {
             const anchor = document.createElement('a');
             anchor.href = imageUrl;
             anchor.target = "_blank";
-            anchor.download = fileName;
+            anchor.download = fileName || "download";
             document.body.appendChild(anchor);
             anchor.click();
             document.body.removeChild(anchor);
@@ -84,11 +68,10 @@ const ImageScreen = () => {
             }
         }
     };
-
     // share image action
     const handleShareImage = async () => {
-        if (Platform.OS === 'web') {
-            showToast('link copied');
+        if (Platform.OS == 'web') {
+            showToast('link copied')
         } else {
             setStatus('sharing');
             let uri = await downloadFile();
@@ -97,6 +80,8 @@ const ImageScreen = () => {
                 await Sharing.shareAsync(uri);
             }
         }
+
+
     };
 
     const downloadFile = async () => {
@@ -111,91 +96,100 @@ const ImageScreen = () => {
             Alert.alert('Image:', err.message);
             return null;
         }
-    };
 
+    };
     const showToast = (message) => {
         Toast.show({
             type: 'success',
             text1: message,
             position: 'bottom'
-        });
+        })
     };
-
     const toastConfig = {
         success: ({ text1, props, ...rest }) => {
             return (
                 <View style={styles.toast}>
                     <Text style={styles.toastText}>{text1}</Text>
                 </View>
-            );
+            )
         }
-    };
-
+    }
     return (
         <BlurView
             style={styles.container}
             tint='dark'
             intensity={80}
         >
+
             <View style={getSize()}>
                 <View style={styles.loading}>
-                    {status === "loading" && <ActivityIndicator size="large" color="white" />}
+                    {
+                        status == "loading" && <ActivityIndicator size="large" color="white"></ActivityIndicator>
+                    }
                 </View>
                 <Image
                     transition={100}
                     style={[styles.image, getSize()]}
-                    source={{ uri }}
-                    onLoad={onLoad}
-                />
-            </View>
+                    source={uri}
+                    onLoad={onLoad} />
 
+            </View>
             {/* action buttons */}
             <View style={styles.buttons}>
-                <Animated.View entering={FadeInDown.springify()}>
+                <Animated.View entering={FadeInDown.springify()} >
                     <Pressable style={styles.button} onPress={() => router.back()}>
                         <Octicons name='x' size={24} color='white' />
                     </Pressable>
                 </Animated.View>
-
                 {/* downloading button */}
                 <Animated.View entering={FadeInDown.springify().delay(100)}>
-                    {status === "downloading" ? (
-                        <View style={styles.button}>
-                            <ActivityIndicator size="small" color="white" />
-                        </View>
-                    ) : (
-                        <Pressable style={styles.button} onPress={handleDownloadImage}>
-                            <Octicons name='download' size={24} color='white' />
-                        </Pressable>
-                    )}
-                </Animated.View>
+                    {
+                        status == "downloading" ? (
+                            <View style={styles.button}>
+                                <ActivityIndicator size="small" color="white"></ActivityIndicator>
+                            </View>
 
+                        ) : (
+                            <Pressable style={styles.button} onPress={handleDownloadImage}>
+                                <Octicons name='download' size={24} color='white' />
+                            </Pressable>
+                        )
+                    }
+
+                </Animated.View>
                 {/* sharing button */}
                 <Animated.View entering={FadeInDown.springify().delay(200)}>
-                    {status === "sharing" ? (
-                        <View style={styles.button}>
-                            <ActivityIndicator size="small" color="white" />
-                        </View>
-                    ) : (
-                        <Pressable style={styles.button} onPress={handleShareImage}>
-                            <Entypo name='share' size={22} color='white' />
-                        </Pressable>
-                    )}
+                    {
+                        status == "sharing" ? (
+                            <View style={styles.button}>
+                                <ActivityIndicator size="small" color="white"></ActivityIndicator>
+                            </View>
+
+                        ) : (
+                            <Pressable style={styles.button} onPress={handleShareImage}>
+                                <Entypo name='share' size={22} color='white' />
+                            </Pressable>
+                        )
+                    }
+
+
                 </Animated.View>
+
             </View>
 
-            <Toast config={toastConfig} visibilityTime={2500} />
-        </BlurView>
-    );
-};
 
+            {/* <Button title='Back' onPress={() => router.back()} /> */}
+            <Toast config={toastConfig} visibilityTime={2500} />
+        </BlurView >
+    )
+}
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: wp(4),
-        backgroundColor: 'rgba(0,0,0,0.5)'
+        backgroundColor: 'rgba(0,0,0,0.5'
     },
     image: {
         borderRadius: theme.radius.lg,
@@ -208,12 +202,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignItems: 'center',
+
     },
     buttons: {
         marginTop: 40,
         flexDirection: 'row',
         alignItems: 'center',
         gap: 50,
+
+
     },
     button: {
         height: hp(6),
@@ -223,6 +220,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.2)',
         borderRadius: theme.radius.md,
         borderCurve: 'continuous',
+
     },
     toast: {
         padding: 15,
@@ -237,6 +235,6 @@ const styles = StyleSheet.create({
         fontWeight: theme.fontWeights.semibold,
         color: theme.colors.white,
     }
-});
 
-export default ImageScreen;
+})
+export default ImageScreen

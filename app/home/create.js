@@ -27,7 +27,7 @@ const Create = () => {
         <Image
           source={require('../../assets/images/light.jpg')}
           style={styles.bgImage}
-          resizeMode='cover'
+          contentFit='cover'
         />
       </Animated.View>
 

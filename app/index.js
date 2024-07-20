@@ -57,7 +57,7 @@ const Index = () => {
         <Image
           source={require('../assets/images/getstart.jpg')}
           style={styles.bgImage}
-          resizeMode='cover'
+          contentFit='cover'
         />
       </Animated.View>
 
