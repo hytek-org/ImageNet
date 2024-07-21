@@ -147,7 +147,7 @@ const ImageCard = ({ item, index, columns }) => {
                         </View>
                         <Image
                             transition={100}
-                            style={[styles.image, getSize()]}
+                            style={[styles.imageModal, getSize()]}
                             source={{ uri: item.webformatURL }}
                             onLoad={onLoad}
                         />
@@ -192,9 +192,10 @@ const styles = StyleSheet.create({
     spacing: {
         marginRight: wp(2),
     },
-    image: {
+    imageModal: {
         width: '100%',
         height: 300,
+        borderRadius:10,
     },
     modalContainer: {
         flex: 1,
