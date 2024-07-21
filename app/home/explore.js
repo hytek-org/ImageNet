@@ -7,7 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import Toast from 'react-native-toast-message';
-import { AntDesign, Entypo, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { Entypo, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 
 // Function to shuffle an array
@@ -20,17 +20,15 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-
-
 const Explore = () => {
   const { top } = useSafeAreaInsets();
   const { saveImage } = useSavedImages();
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [loadingshare, setLoadingShare] = useState(false);
-  const [loadingdownload, setLoadingDownload] = useState(false);
-  const [loadingsave, setLoadingSave] = useState(false);
+  const [loadingShare, setLoadingShare] = useState(false);
+  const [loadingDownload, setLoadingDownload] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
 
   // Function to handle image download
   const handleDownloadImage = async (imageUrl, fileName) => {
@@ -43,11 +41,9 @@ const Explore = () => {
       const { uri } = await FileSystem.downloadAsync(imageUrl, fileUri);
       console.log('Image downloaded to:', uri);
 
-
       const asset = await MediaLibrary.createAssetAsync(uri);
       await MediaLibrary.createAlbumAsync('Download', asset, false);
       showToast('Image Downloaded');
-      Alert.alert('Success', 'Image Downloaded');
     } catch (error) {
       console.error('Error downloading image:', error);
       Alert.alert('Error', 'Failed to download image');
@@ -63,6 +59,7 @@ const Explore = () => {
       const fileUri = await FileSystem.downloadAsync(imageUrl, FileSystem.documentDirectory + 'share.jpg');
       if (fileUri) {
         await Sharing.shareAsync(fileUri.uri);
+        showToast('Image Shared');
       }
     } catch (error) {
       console.error('Error sharing image:', error);
@@ -77,18 +74,17 @@ const Explore = () => {
     Toast.show({
       type: 'success',
       text1: message,
-      position: 'bottom'
+      position: 'top'
     });
   };
+
   const toastConfig = {
-    success: ({ text1, props, ...rest }) => {
-        return (
-            <View style={styles.toast}>
-                <Text style={styles.toastText}>{text1}</Text>
-            </View>
-        )
-    }
-}
+    success: ({ text1, props, ...rest }) => (
+      <View style={styles.toast}>
+        <Text style={styles.toastText}>{text1}</Text>
+      </View>
+    )
+  };
 
   useEffect(() => {
     fetchImages({ page });
@@ -124,14 +120,14 @@ const Explore = () => {
   // Function to handle saving image to context
   const handleSaveImage = (image) => {
     saveImage(image);
-    Alert.alert('Success', 'Image saved successfully!');
+    showToast('Image Saved');
   };
 
   // Function to render each image item
   const renderItem = ({ item }) => (
     <View className="h-screen justify-between items-center ">
       <View className="h-full w-full py-2 bg-white opacity-90">
-        <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded " resizeMode="cover" />
+        <Image source={{ uri: item.largeImageURL }} className="w-full h-full rounded " contentFit="cover" />
         <View className="flex flex-row space-x-4 items-center justify-between">
           <Text className="text-sm font-normal">Image by <Text className="underline italic">{item.user}</Text>
           </Text>
@@ -151,13 +147,13 @@ const Explore = () => {
         </View>
         <View  className="flex flex-col space-y-2 justify-end items-center">
           <Pressable onPress={() => handleShareImage(item.largeImageURL)} className="rounded-lg" style={styles.button}>
-            {loadingshare ? <ActivityIndicator size="small" color="white" /> : <Entypo name='share' size={22} color='white' />}
+            {loadingShare ? <ActivityIndicator size="small" color="white" /> : <Entypo name='share' size={22} color='white' />}
           </Pressable>
           <Pressable className="rounded-lg px-3.5" onPress={() => handleDownloadImage(item.largeImageURL, item.id.toString())} style={styles.button}>
-            {loadingdownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='download' size={24} color='white' />}
+            {loadingDownload ? <ActivityIndicator size="small" color="white" /> : <Octicons name='download' size={24} color='white' />}
           </Pressable>
           <Pressable className="rounded-lg" onPress={() => handleSaveImage(item)} style={styles.button}>
-            {loadingsave ? <ActivityIndicator size="small" color="white" /> : <MaterialIcons name='bookmark-outline' size={24} color='white' />}
+            {loadingSave ? <ActivityIndicator size="small" color="white" /> : <MaterialIcons name='bookmark-outline' size={24} color='white' />}
           </Pressable>
           <Image
             source={{ uri: item.userImageURL }}
@@ -165,6 +161,7 @@ const Explore = () => {
           />
         </View>
       </View>
+        <Toast config={toastConfig} visibilityTime={2500} />
       
     </View>
   );
@@ -181,6 +178,7 @@ const Explore = () => {
         onEndReachedThreshold={0.5}
         ListFooterComponent={loading && <ActivityIndicator size="large" color="#101010" />}
       />
+      <Toast config={toastConfig} />
     </View>
   );
 };
@@ -189,7 +187,6 @@ const styles = {
   buttonItems: {
     width: '100%',
     alignItems: 'flex-end'
-
   },
   button: {
     backgroundColor: 'rgba(255,255,255,0.2)',
@@ -197,6 +194,19 @@ const styles = {
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  toast: {
+    padding: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.4)',
+  },
+  toastText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   }
 };
 
