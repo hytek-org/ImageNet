@@ -1,6 +1,6 @@
 # ImageNet
 
-ImageNet is an Android application developed by [Your Organization] that allows users to search for images and download them easily. The app is built using React Native and Expo, providing a seamless and efficient experience for managing and downloading images on the go.
+ImageNet is an Android application developed by **HYTEK Organization** that allows users to search for images and download them easily. The app is built using React Native and Expo, providing a seamless and efficient experience for managing and downloading images on the go.
 
 ## Features
 
@@ -42,7 +42,7 @@ ImageNet is an Android application developed by [Your Organization] that allows 
    ```
 4. Start the Expo server:
    ```bash
-   npm start
+   npm run start
    ```
 5. Follow the Expo CLI instructions to run the app on an Android emulator/simulator or physical device.
 
